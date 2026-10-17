@@ -242,10 +242,7 @@ function ajouterSlide(html, classe) {
 }
 
 // Anniversaires du jour
-// Le lundi, on fête aussi les anniversaires du samedi et du dimanche
-const joursFetes = [cleJour];
-if (auj.getDay() === 1) [1, 2].forEach(n => { const d = new Date(auj); d.setDate(d.getDate() - n); joursFetes.push(pad(d.getMonth() + 1) + "-" + pad(d.getDate())); });
-const annivs = ANNIVERSAIRES.filter(a => joursFetes.includes(a.jour)).map(a => esc(a.prenom));
+const annivs = ANNIVERSAIRES.filter(a => a.jour === cleJour).map(a => esc(a.prenom));
 if (annivs.length) {
   ajouterSlide(
     '<div class="kicker">' + puce + "Anniversaire</div>" +
