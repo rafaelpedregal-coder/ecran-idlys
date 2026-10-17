@@ -6,128 +6,271 @@
 <meta name="robots" content="noindex, nofollow">
 <title>iD.LYS Contrôles – écran d’accueil</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
+  /* Charte iD.LYS Contrôles — tokens repris du design system iD.LYS */
   :root {
-    --bg: #F3F6F8;
-    --ink: #13283A;
-    --soft: #5C7183;
-    --accent: #1F8A70;
-    --line: #D3DDE4;
+    --controles: #157ec2;        /* bleu Contrôles (texte ≥ 24 px) */
+    --controles-text: #0a6aa0;   /* bleu pour petits textes */
+    --voile: #eaf3fa;            /* voile bleu clair */
+    --noir: #1b1b1c;
+    --texte: #4a4a4f;
+    --texte-2: #6e6e77;
+    --creme: #f7f6f4;
+    --blanc: #ffffff;
+    --filet: #d9d9d9;
+    --u: min(1vw, 1.7778vh);     /* 1 unité = 1/100 de la largeur d’un écran 16:9 */
     color-scheme: light;
   }
   html, body { height: 100%; margin: 0; }
   body {
-    background: var(--bg); color: var(--ink);
-    font-family: "Sora", "Segoe UI", system-ui, sans-serif;
+    background: var(--blanc); color: var(--noir);
+    font-family: "DIN Pro", Barlow, Arial, sans-serif;
     overflow: hidden; cursor: none;
+    -webkit-font-smoothing: antialiased;
   }
-  .stage { position: relative; height: 100%; }
+  .stage { position: relative; height: 100%; overflow: hidden; }
   .slide {
-    position: absolute; inset: 0;
-    display: flex; flex-direction: column; justify-content: center;
-    padding: 0 8vw;
+    position: absolute; inset: 0; overflow: hidden;
     opacity: 0; transition: opacity 1.2s ease;
   }
   .slide.on { opacity: 1; }
+  .creme { background: var(--creme); }
 
-  /* Écran logo */
-  .brand { align-items: center; text-align: center; }
-  .wordmark { font-weight: 800; font-size: 16vw; letter-spacing: -0.04em; line-height: 0.9; }
-  .wordmark .dot { color: var(--accent); }
-  .tagline { font-weight: 300; font-size: 3.4vw; color: var(--soft); margin-top: 2vw; }
-
-  /* Écran date + fête */
-  .today .date { font-weight: 300; font-size: 3vw; color: var(--soft); }
-  .today .big { font-weight: 800; font-size: 9vw; line-height: 1; margin: 1.5vw 0 2.5vw; }
-  .today .fete { font-size: 3.6vw; font-weight: 400; max-width: 60ch; }
-  .today .fete strong { font-weight: 600; }
-
-  /* Écran message */
-  .msg .kicker { font-size: 2.2vw; color: var(--accent); font-weight: 600; margin-bottom: 2vw; }
-  .msg h2 { font-size: 5.6vw; font-weight: 600; line-height: 1.1; margin: 0 0 2vw; max-width: 22ch; }
-  .msg p { font-size: 2.6vw; font-weight: 300; color: var(--soft); max-width: 46ch; line-height: 1.45; margin: 0; }
-
-  /* Pied : heure + progression */
-  .foot {
-    position: absolute; left: 8vw; right: 8vw; bottom: 3vw;
-    display: flex; align-items: center; gap: 2vw;
-    font-size: 1.6vw; color: var(--soft);
+  /* Puce de marque : trois barres bleues */
+  .kicker {
+    display: flex; align-items: center; gap: calc(var(--u) * 1.1);
+    font-weight: 700; font-size: calc(var(--u) * 1.6); letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--controles-text);
   }
-  .bar { flex: 1; height: 0.25vw; background: var(--line); border-radius: 1vw; overflow: hidden; }
-  .bar i { display: block; height: 100%; width: 0; background: var(--accent); }
-  .clock { font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .puce { display: flex; align-items: flex-end; gap: calc(var(--u) * 0.22); }
+  .puce i { display: block; width: calc(var(--u) * 0.33); border-radius: 99px; background: var(--controles); }
+  .puce i:nth-child(1) { height: calc(var(--u) * 0.6); }
+  .puce i:nth-child(2) { height: calc(var(--u) * 1.1); }
+  .puce i:nth-child(3) { height: calc(var(--u) * 0.85); }
+
+  h1, h2 { margin: 0; font-weight: 900; line-height: 1.02; letter-spacing: -0.01em; }
+  .bleu { color: var(--controles); }
+
+  /* 1. Logo */
+  .brand .motif {
+    position: absolute; right: calc(var(--u) * -12); top: 50%;
+    height: calc(var(--u) * 34); transform: translateY(-50%);
+  }
+  .brand .motif path, .brand .motif rect { fill: var(--voile); }
+  .brand .bloc {
+    position: absolute; left: calc(var(--u) * 8); top: 50%; transform: translateY(-50%);
+  }
+  .brand .logo { width: calc(var(--u) * 44); display: block; }
+  .brand .tagline { margin-top: calc(var(--u) * 3.2); }
+  .brand .signature {
+    margin-top: calc(var(--u) * 1.4);
+    font-size: calc(var(--u) * 2.4); font-weight: 400; color: var(--texte);
+  }
+
+  /* 2. Date + fête */
+  .today .gauche {
+    position: absolute; left: calc(var(--u) * 8); top: 0; bottom: 0; width: calc(var(--u) * 52);
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .today h1 { font-size: calc(var(--u) * 7.4); margin: calc(var(--u) * 2) 0 calc(var(--u) * 3.6); }
+  .today .fete {
+    background: var(--voile); border-radius: 0 0 0 calc(var(--u) * 5);
+    padding: calc(var(--u) * 2.6) calc(var(--u) * 3);
+    font-size: calc(var(--u) * 2.5); color: var(--noir); line-height: 1.35;
+  }
+  .today .fete strong { font-weight: 900; color: var(--controles); }
+  .today .fete:empty { display: none; }
+  .today .bloc-bleu {
+    position: absolute; right: 0; top: calc(var(--u) * 7); bottom: calc(var(--u) * 7);
+    width: calc(var(--u) * 30);
+    background: var(--controles); color: var(--blanc);
+    border-radius: 0 calc(var(--u) * 7) 0 0;
+    display: flex; flex-direction: column; justify-content: center; padding-left: calc(var(--u) * 4);
+  }
+  .today .heure { font-weight: 900; font-size: calc(var(--u) * 9); line-height: 1; font-variant-numeric: tabular-nums; }
+  .today .legende { font-weight: 500; font-size: calc(var(--u) * 1.7); letter-spacing: 0.14em; text-transform: uppercase; margin-top: calc(var(--u) * 1.4); }
+
+  /* 3. Messages, anniversaires, veille */
+  .texte .contenu {
+    position: absolute; left: calc(var(--u) * 8); right: calc(var(--u) * 8); top: 0; bottom: calc(var(--u) * 6);
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .texte h2 { font-size: calc(var(--u) * 5.6); max-width: 24ch; margin: calc(var(--u) * 2.2) 0 calc(var(--u) * 2.6); }
+  .texte p { margin: 0; font-size: calc(var(--u) * 2.4); line-height: 1.45; color: var(--texte); max-width: 52ch; }
+  .texte .source { margin-top: calc(var(--u) * 2.4); font-size: calc(var(--u) * 1.6); font-weight: 500; color: var(--texte-2); }
+  .texte .carte {
+    background: var(--blanc); border-top: calc(var(--u) * 0.3) solid var(--controles);
+    padding: calc(var(--u) * 3) calc(var(--u) * 3.4); max-width: calc(var(--u) * 70);
+  }
+  .noms { font-size: calc(var(--u) * 6.4); font-weight: 900; color: var(--controles); line-height: 1.1; }
+
+  /* Pied : pictogramme, filet de progression, heure */
+  .foot {
+    position: absolute; left: calc(var(--u) * 8); right: calc(var(--u) * 8); bottom: calc(var(--u) * 3);
+    display: flex; align-items: center; gap: calc(var(--u) * 2);
+    transition: opacity 1.2s ease;
+  }
+  .foot.cache { opacity: 0; }
+  .foot .picto { height: calc(var(--u) * 2); display: block; }
+  .bar { flex: 1; height: 2px; background: var(--filet); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; background: var(--controles); }
+  .clock { font-weight: 700; font-size: calc(var(--u) * 1.6); color: var(--noir); font-variant-numeric: tabular-nums; }
+
+  @media (prefers-reduced-motion: reduce) { .slide, .foot { transition: none; } }
 </style>
 </head>
 <body>
-<main class="stage">
-  <section class="slide brand on">
-    <div class="wordmark">iD<span class="dot">.</span>LYS</div>
-    <div class="tagline">Contrôles</div>
+<main class="stage" id="stage">
+  <section class="slide brand on" data-type="logo">
+    <svg class="motif" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 171.33 110.18"><g data-name="Calque_1"><g><rect fill="#157ec2" class="cls-1" x="61.15" width="49.02" height="110.18"></rect><path fill="#157ec2" class="cls-1" d="M171.33,20.37v70.34c0,10.75-8.72,19.47-19.47,19.47h-29.55V0h28.66c11.25,0,20.37,9.12,20.37,20.37Z"></path><path fill="#157ec2" class="cls-1" d="M49.02,0v25.73H0v-6.26C0,8.72,8.72,0,19.47,0h29.55Z"></path><rect fill="#157ec2" class="cls-1" y="37.88" width="49.02" height="72.3"></rect></g></g></svg>
+    <div class="bloc">
+      <svg class="logo" role="img" aria-label="iD.LYS Contrôles" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 767.8 178.3"><g><path fill="#1b1b1b" d="M261.7,110.2h-19.3V38.1h19.3v72.2Z"></path><path fill="#157ec2" d="M261.7,25.7h-6.1c-7.3,0-13.2-5.9-13.2-13.2V0s19.3,0,19.3,0v25.7Z"></path><path fill="#1b1b1b" d="M400.7,55.2c0,37.1-17.3,55-49.6,55h-38.9c-6.2,0-9.1-2.9-9.1-9V9c0-6,2.9-9,9.1-9h38.9c32.2,0,49.6,18,49.6,55.2ZM324.5,91h26.6c21.4,0,30.4-10.6,30.4-35.9s-9-35.8-30.4-35.8h-26.6c-1.5,0-2.1.5-2.1,2v67.8c0,1.5.7,2,2.1,2Z"></path><path fill="#1b1b1b" d="M471.4,72c0,10.6,5.2,18.9,22.5,18.9h42.8v19.3h-43.9c-29.2,0-40.7-16-40.7-38V0h19.3v72Z"></path><path fill="#1b1b1b" d="M596.1,47.2L627.3,0h22.9l-44.4,62.7v47.5h-19.4v-47.5L541.9,0h23.4l30.9,47.2Z"></path><path fill="#1b1b1b" d="M759.4,19.3h-56.5c-10,0-14.4,5.4-14.4,13.1s3.4,13.1,16.3,13.1h25.8c30,0,37.1,16.7,37.1,32.5s-10,32.3-35.1,32.3h-61.4v-19.3h62.1c10.5,0,15.2-5.7,15.2-13.7s-3.8-13.7-17.3-13.7h-25.6c-29.4,0-36.3-16.5-36.3-31.8s9.8-31.7,34.3-31.7h55.8v19.3Z"></path><g><rect fill="#157ec2" x="61.2" y=".2" width="49" height="110.2"></rect><path fill="#157ec2" d="M171.3,20.5v70.3c0,10.8-8.7,19.5-19.5,19.5h-29.6V.2h28.7c11.2,0,20.4,9.1,20.4,20.4Z"></path><path fill="#157ec2" d="M49,.2v25.7H0v-6.3C0,8.9,8.7.2,19.5.2h29.6Z"></path><rect fill="#157ec2" y="38.1" width="49" height="72.3"></rect></g><path fill="#157ec2" d="M425.5,111c4.6,0,7.1,0,8.8-1.7,1.7-1.7,1.7-4.2,1.7-8.8s0-7.1-1.7-8.8c-1.7-1.7-4.2-1.7-8.8-1.7s-7.1,0-8.8,1.7c-1.7,1.7-1.7,4.2-1.7,8.8s0,7.1,1.7,8.8c1.7,1.7,4.2,1.7,8.8,1.7Z"></path></g><g><path fill="#157ec2" d="M244.8,174.7c-3.5-3.5-3.7-6.7-3.7-15.2s.2-11.7,3.7-15.2,5.4-3.6,9.3-3.6c6.7,0,11.6,4.1,12.9,11.1h-4.1c-1-4.6-4.2-7.5-8.8-7.5s-4.6.9-6.4,2.6c-2.4,2.4-2.6,5.5-2.6,12.7s.2,10.3,2.6,12.7c1.7,1.7,3.9,2.6,6.4,2.6,4.6,0,7.8-2.9,8.8-7.5h4.1c-1.3,7-6.1,11.1-12.9,11.1s-7-1.4-9.3-3.6Z"></path><path fill="#157ec2" d="M278,174.7c-3.5-3.5-3.7-6.7-3.7-15.2s.2-11.7,3.7-15.2,5.4-3.6,9.3-3.6,7,1.4,9.2,3.6c3.5,3.5,3.7,6.7,3.7,15.2s-.2,11.7-3.7,15.2c-2.3,2.3-5.4,3.6-9.2,3.6s-7-1.4-9.3-3.6ZM280.9,172.2c1.7,1.7,3.9,2.6,6.4,2.6s4.6-.9,6.4-2.6c2.4-2.4,2.6-5.5,2.6-12.7s-.2-10.3-2.6-12.7c-1.7-1.7-3.9-2.6-6.4-2.6s-4.6.9-6.4,2.6c-2.4,2.4-2.6,5.5-2.6,12.7s.2,10.3,2.6,12.7Z"></path><path fill="#157ec2" d="M309.6,141h3.8l19.6,29.6v-29.6h4v37.1h-3.8l-19.6-29.6v29.6h-4v-37.1Z"></path><path fill="#157ec2" d="M354.5,144.5h-10.7v-3.5h25.4v3.5h-10.7v33.5h-4v-33.5Z"></path><path fill="#157ec2" d="M376.2,141h14.2c6.5,0,11,3.9,11,10.3s-3.5,9-8.1,10l8.8,16.8h-4.6l-8.4-16.5h-8.9v16.5h-4v-37.1ZM390,158.1c4.3,0,7.4-2.3,7.4-6.8s-3-6.8-7.4-6.8h-9.9v13.6h9.9Z"></path><path fill="#157ec2" d="M412.1,174.7c-3.5-3.5-3.7-6.7-3.7-15.2s.2-11.7,3.7-15.2,5.4-3.6,9.3-3.6,7,1.4,9.2,3.6c3.5,3.5,3.7,6.7,3.7,15.2s-.2,11.7-3.7,15.2c-2.3,2.3-5.4,3.6-9.2,3.6s-7-1.4-9.3-3.6ZM415,172.2c1.7,1.7,3.9,2.6,6.4,2.6s4.6-.9,6.4-2.6c2.4-2.4,2.6-5.5,2.6-12.7s-.2-10.3-2.6-12.7c-1.7-1.7-3.9-2.6-6.4-2.6s-4.6.9-6.4,2.6c-2.4,2.4-2.6,5.5-2.6,12.7s.2,10.3,2.6,12.7ZM419.6,129.5h3.6l6.5,8h-3.6l-4.7-5.4-4.7,5.4h-3.6l6.5-8Z"></path><path fill="#157ec2" d="M443.6,141h4v33.5h18.9v3.5h-22.9v-37.1Z"></path><path fill="#157ec2" d="M473.5,141h23v3.5h-19v13.1h16.2v3.5h-16.2v13.4h19v3.5h-23v-37.1Z"></path><path fill="#157ec2" d="M501.5,173.4l2.7-2.7c3.1,3.1,6,4.1,10.1,4.1s5.5-.8,7-2.3c1.1-1.1,1.8-2.7,1.8-4.6s-.3-2.4-.7-3.2c-.8-1.6-2.3-2.7-5.3-3.1l-5-.8c-3.9-.6-7.1-2.1-8.6-5.2-.7-1.3-1-2.8-1-4.6,0-2.9,1-5.4,2.8-7.2,2.1-2.1,5.2-3.3,9.2-3.3s7.7,1.2,10.9,4.1l-2.5,2.6c-2.2-2.1-4.6-3.2-8.5-3.2s-4.8.8-6.1,2.1c-1.2,1.2-1.8,2.8-1.8,4.7s.2,2.2.6,2.9c1,2,3.4,2.9,5.9,3.3l4.9.8c4.1.7,6.7,2.2,8.3,5.3.6,1.3,1,2.9,1,4.6,0,2.9-1,5.2-2.7,7s-5.8,3.5-10.1,3.5-9.2-1.4-12.7-4.9Z"></path></g></svg>
+      <div class="kicker tagline"><span class="puce"><i></i><i></i><i></i></span>Contrôles et mesures réglementaires</div>
+      <div class="signature">Le partenaire des moments décisifs du bâtiment</div>
+    </div>
   </section>
 
-  <section class="slide today">
-    <div class="date" id="dateLong"></div>
-    <div class="big">Bonne journée à tous</div>
-    <div class="fete" id="fete"></div>
+  <section class="slide today" data-type="jour">
+    <div class="gauche">
+      <div class="kicker"><span class="puce"><i></i><i></i><i></i></span>Aujourd’hui</div>
+      <h1><span id="jourSemaine"></span><br><span class="bleu" id="jourDate"></span></h1>
+      <div class="fete" id="fete"></div>
+    </div>
+    <div class="bloc-bleu">
+      <div class="heure" id="heureGrande"></div>
+      <div class="legende">Bonne journée à tous</div>
+    </div>
   </section>
 
-  <section class="slide msg">
-    <div class="kicker">Information</div>
-    <h2>Test de diffusion sur l’écran de l’agence</h2>
-    <p>Bientôt ici : les anniversaires, la fête du jour, la veille réglementaire et les nouvelles de l’entreprise.</p>
-  </section>
-
-  <div class="foot">
-    <span class="clock" id="clock"></span>
+  <div class="foot cache" id="foot">
+    <svg class="picto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 171.33 110.18"><g data-name="Calque_1"><g><rect fill="#157ec2" class="cls-1" x="61.15" width="49.02" height="110.18"></rect><path fill="#157ec2" class="cls-1" d="M171.33,20.37v70.34c0,10.75-8.72,19.47-19.47,19.47h-29.55V0h28.66c11.25,0,20.37,9.12,20.37,20.37Z"></path><path fill="#157ec2" class="cls-1" d="M49.02,0v25.73H0v-6.26C0,8.72,8.72,0,19.47,0h29.55Z"></path><rect fill="#157ec2" class="cls-1" y="37.88" width="49.02" height="72.3"></rect></g></g></svg>
     <div class="bar"><i id="prog"></i></div>
+    <span class="clock" id="clock"></span>
   </div>
 </main>
 
 <script>
-  const DUREE = 10000; // 10 s par écran
-  const fetes = {
-    "10-17": "Ignace", "10-18": "Luc", "10-19": "René", "10-20": "Adeline",
-    "10-21": "Céline", "10-22": "Élodie", "10-23": "Jean", "10-24": "Florentin"
-  };
+/* =====================================================================
+   CONTENU DE L’ÉCRAN — c’est la seule partie à modifier au quotidien
+   Dates au format "AAAA-MM-JJ". Anniversaires et fêtes au format "MM-JJ".
+   ===================================================================== */
 
-  function majDate() {
-    const d = new Date();
-    const txt = d.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
-    document.getElementById("dateLong").textContent = txt.charAt(0).toUpperCase() + txt.slice(1);
-    const cle = String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
-    const f = fetes[cle];
-    document.getElementById("fete").innerHTML = f
-      ? "Aujourd’hui, nous souhaitons une bonne fête aux <strong>" + f + "</strong>."
-      : "";
+// Messages internes : affichés du « du » au « au » inclus
+// (si « au » est vide, le message reste 15 jours).
+const MESSAGES = [
+  {
+    du: "2026-10-17", au: "",
+    rubrique: "Information",
+    titre: "Test de diffusion", titreBleu: "sur l’écran de l’agence",
+    texte: "Bientôt ici : les anniversaires, la fête du jour, la veille réglementaire et les nouvelles de l’entreprise."
   }
-  function majHeure() {
-    document.getElementById("clock").textContent =
-      new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
-  }
+];
 
-  const slides = [...document.querySelectorAll(".slide")];
-  const prog = document.getElementById("prog");
-  let i = 0;
-  function lancerBarre() {
-    prog.style.transition = "none"; prog.style.width = "0";
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      prog.style.transition = "width " + DUREE + "ms linear"; prog.style.width = "100%";
-    }));
-  }
-  function suivant() {
-    slides[i].classList.remove("on");
-    i = (i + 1) % slides.length;
-    slides[i].classList.add("on");
-    if (i === 1) majDate();
-    lancerBarre();
-  }
+// Anniversaires des salariés (prénom + jour/mois uniquement, avec leur accord)
+// Exemple : { prenom: "José", jour: "03-14" },
+const ANNIVERSAIRES = [
+];
 
-  majDate(); majHeure(); lancerBarre();
-  setInterval(suivant, DUREE);
-  setInterval(majHeure, 15000);
-  // Rechargement toutes les heures pour récupérer les mises à jour publiées sur GitHub
-  setInterval(() => location.reload(), 3600000);
+// Veille réglementaire : affichée du « du » au « au » inclus
+// Exemple : { du: "2026-10-20", au: "2026-10-31", titre: "…", titreBleu: "…", texte: "…", source: "Arrêté du … – JO du …" },
+const VEILLE = [
+];
+
+// Fêtes du jour (calendrier usuel)
+const FETES = {
+  "10-17": "Ignace", "10-18": "Luc", "10-19": "René", "10-20": "Adeline",
+  "10-21": "Céline", "10-22": "Élodie", "10-23": "Jean", "10-24": "Florentin"
+};
+
+const DUREE = 12000; // durée d’affichage de chaque écran, en millisecondes
+
+/* ===================== Fin de la partie à modifier ===================== */
+
+const pad = n => String(n).padStart(2, "0");
+const auj = new Date();
+const iso = d => d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+const cleJour = pad(auj.getMonth() + 1) + "-" + pad(auj.getDate());
+const ajout15 = s => { const d = new Date(s + "T12:00:00"); d.setDate(d.getDate() + 14); return iso(d); };
+const actif = e => iso(auj) >= e.du && iso(auj) <= (e.au || ajout15(e.du));
+const esc = s => String(s || "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const puce = '<span class="puce"><i></i><i></i><i></i></span>';
+const stage = document.getElementById("stage");
+const foot = document.getElementById("foot");
+
+function ajouterSlide(html, classe) {
+  const s = document.createElement("section");
+  s.className = "slide texte " + (classe || "");
+  s.innerHTML = '<div class="contenu">' + html + "</div>";
+  stage.insertBefore(s, foot);
+}
+
+// Anniversaires du jour
+const annivs = ANNIVERSAIRES.filter(a => a.jour === cleJour).map(a => esc(a.prenom));
+if (annivs.length) {
+  ajouterSlide(
+    '<div class="kicker">' + puce + "Anniversaire</div>" +
+    "<h2>Joyeux anniversaire</h2>" +
+    '<div class="noms">' + annivs.join(" · ") + "</div>", "creme");
+}
+
+// Messages en cours
+MESSAGES.filter(actif).forEach(m => ajouterSlide(
+  '<div class="kicker">' + puce + esc(m.rubrique || "Information") + "</div>" +
+  "<h2>" + esc(m.titre) + (m.titreBleu ? ' <span class="bleu">' + esc(m.titreBleu) + "</span>" : "") + "</h2>" +
+  (m.texte ? "<p>" + esc(m.texte) + "</p>" : ""), "creme"));
+
+// Veille réglementaire en cours
+VEILLE.filter(actif).forEach(v => ajouterSlide(
+  '<div class="kicker">' + puce + "Veille réglementaire</div>" +
+  '<div class="carte"><h2>' + esc(v.titre) + (v.titreBleu ? ' <span class="bleu">' + esc(v.titreBleu) + "</span>" : "") + "</h2>" +
+  (v.texte ? "<p>" + esc(v.texte) + "</p>" : "") +
+  (v.source ? '<div class="source">' + esc(v.source) + "</div>" : "") + "</div>", "creme"));
+
+// Date et fête
+function majDate() {
+  const d = new Date();
+  const js = d.toLocaleDateString("fr-FR", { weekday: "long" });
+  document.getElementById("jourSemaine").textContent = js.charAt(0).toUpperCase() + js.slice(1);
+  document.getElementById("jourDate").textContent = d.toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
+  const f = FETES[pad(d.getMonth() + 1) + "-" + pad(d.getDate())];
+  document.getElementById("fete").innerHTML = f
+    ? "Nous souhaitons une bonne fête<br>aux <strong>" + esc(f) + "</strong>" : "";
+}
+function majHeure() {
+  const h = new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+  document.getElementById("clock").textContent = h;
+  document.getElementById("heureGrande").textContent = h;
+}
+
+// Défilement
+const slides = [...document.querySelectorAll(".slide")];
+const prog = document.getElementById("prog");
+let i = 0;
+function lancerBarre() {
+  prog.style.transition = "none"; prog.style.width = "0";
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    prog.style.transition = "width " + DUREE + "ms linear"; prog.style.width = "100%";
+  }));
+}
+function afficher() {
+  foot.classList.toggle("cache", slides[i].dataset.type === "logo" || slides[i].dataset.type === "jour");
+  lancerBarre();
+}
+function suivant() {
+  slides[i].classList.remove("on");
+  i = (i + 1) % slides.length;
+  slides[i].classList.add("on");
+  majDate();
+  afficher();
+}
+
+majDate(); majHeure(); afficher();
+setInterval(suivant, DUREE);
+setInterval(majHeure, 10000);
+// Rechargement toutes les heures pour récupérer les mises à jour publiées sur GitHub
+setInterval(() => location.reload(), 3600000);
 </script>
 </body>
 </html>
