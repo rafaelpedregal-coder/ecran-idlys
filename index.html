@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>iD.LYS Contrôles – écran d’accueil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F3F6F8;
+    --ink: #13283A;
+    --soft: #5C7183;
+    --accent: #1F8A70;
+    --line: #D3DDE4;
+    color-scheme: light;
+  }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: "Sora", "Segoe UI", system-ui, sans-serif;
+    overflow: hidden; cursor: none;
+  }
+  .stage { position: relative; height: 100%; }
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 0 8vw;
+    opacity: 0; transition: opacity 1.2s ease;
+  }
+  .slide.on { opacity: 1; }
+
+  /* Écran logo */
+  .brand { align-items: center; text-align: center; }
+  .wordmark { font-weight: 800; font-size: 16vw; letter-spacing: -0.04em; line-height: 0.9; }
+  .wordmark .dot { color: var(--accent); }
+  .tagline { font-weight: 300; font-size: 3.4vw; color: var(--soft); margin-top: 2vw; }
+
+  /* Écran date + fête */
+  .today .date { font-weight: 300; font-size: 3vw; color: var(--soft); }
+  .today .big { font-weight: 800; font-size: 9vw; line-height: 1; margin: 1.5vw 0 2.5vw; }
+  .today .fete { font-size: 3.6vw; font-weight: 400; max-width: 60ch; }
+  .today .fete strong { font-weight: 600; }
+
+  /* Écran message */
+  .msg .kicker { font-size: 2.2vw; color: var(--accent); font-weight: 600; margin-bottom: 2vw; }
+  .msg h2 { font-size: 5.6vw; font-weight: 600; line-height: 1.1; margin: 0 0 2vw; max-width: 22ch; }
+  .msg p { font-size: 2.6vw; font-weight: 300; color: var(--soft); max-width: 46ch; line-height: 1.45; margin: 0; }
+
+  /* Pied : heure + progression */
+  .foot {
+    position: absolute; left: 8vw; right: 8vw; bottom: 3vw;
+    display: flex; align-items: center; gap: 2vw;
+    font-size: 1.6vw; color: var(--soft);
+  }
+  .bar { flex: 1; height: 0.25vw; background: var(--line); border-radius: 1vw; overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; background: var(--accent); }
+  .clock { font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<main class="stage">
+  <section class="slide brand on">
+    <div class="wordmark">iD<span class="dot">.</span>LYS</div>
+    <div class="tagline">Contrôles</div>
+  </section>
+
+  <section class="slide today">
+    <div class="date" id="dateLong"></div>
+    <div class="big">Bonne journée à tous</div>
+    <div class="fete" id="fete"></div>
+  </section>
+
+  <section class="slide msg">
+    <div class="kicker">Information</div>
+    <h2>Test de diffusion sur l’écran de l’agence</h2>
+    <p>Bientôt ici : les anniversaires, la fête du jour, la veille réglementaire et les nouvelles de l’entreprise.</p>
+  </section>
+
+  <div class="foot">
+    <span class="clock" id="clock"></span>
+    <div class="bar"><i id="prog"></i></div>
+  </div>
+</main>
+
+<script>
+  const DUREE = 10000; // 10 s par écran
+  const fetes = {
+    "10-17": "Ignace", "10-18": "Luc", "10-19": "René", "10-20": "Adeline",
+    "10-21": "Céline", "10-22": "Élodie", "10-23": "Jean", "10-24": "Florentin"
+  };
+
+  function majDate() {
+    const d = new Date();
+    const txt = d.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+    document.getElementById("dateLong").textContent = txt.charAt(0).toUpperCase() + txt.slice(1);
+    const cle = String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    const f = fetes[cle];
+    document.getElementById("fete").innerHTML = f
+      ? "Aujourd’hui, nous souhaitons une bonne fête aux <strong>" + f + "</strong>."
+      : "";
+  }
+  function majHeure() {
+    document.getElementById("clock").textContent =
+      new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+  }
+
+  const slides = [...document.querySelectorAll(".slide")];
+  const prog = document.getElementById("prog");
+  let i = 0;
+  function lancerBarre() {
+    prog.style.transition = "none"; prog.style.width = "0";
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      prog.style.transition = "width " + DUREE + "ms linear"; prog.style.width = "100%";
+    }));
+  }
+  function suivant() {
+    slides[i].classList.remove("on");
+    i = (i + 1) % slides.length;
+    slides[i].classList.add("on");
+    if (i === 1) majDate();
+    lancerBarre();
+  }
+
+  majDate(); majHeure(); lancerBarre();
+  setInterval(suivant, DUREE);
+  setInterval(majHeure, 15000);
+  // Rechargement toutes les heures pour récupérer les mises à jour publiées sur GitHub
+  setInterval(() => location.reload(), 3600000);
+</script>
+</body>
+</html>
