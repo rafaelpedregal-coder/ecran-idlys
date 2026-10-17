@@ -171,6 +171,41 @@ const MESSAGES = [
 // Anniversaires des salariés (prénom + jour/mois uniquement, avec leur accord)
 // Exemple : { prenom: "José", jour: "03-14" },
 const ANNIVERSAIRES = [
+  { prenom: "Sofia", jour: "01-11" },
+  { prenom: "Jonathan", jour: "01-12" },
+  { prenom: "Estelle", jour: "03-08" },
+  { prenom: "Tomy", jour: "03-26" },
+  { prenom: "Catherine", jour: "04-01" },
+  { prenom: "Julie", jour: "04-01" },
+  { prenom: "Laurent", jour: "04-19" },
+  { prenom: "Alexandre", jour: "04-29" },
+  { prenom: "Vincent", jour: "05-10" },
+  { prenom: "Adrien", jour: "05-11" },
+  { prenom: "Marc", jour: "05-23" },
+  { prenom: "Didier", jour: "05-24" },
+  { prenom: "Xavier", jour: "05-24" },
+  { prenom: "Vivien", jour: "05-28" },
+  { prenom: "Joffrey", jour: "05-31" },
+  { prenom: "Loic", jour: "06-06" },
+  { prenom: "Charly", jour: "06-15" },
+  { prenom: "Adryan", jour: "06-16" },
+  { prenom: "Alexia", jour: "06-21" },
+  { prenom: "Moise", jour: "08-17" },
+  { prenom: "Anthony", jour: "09-18" },
+  { prenom: "Hugo", jour: "09-22" },
+  { prenom: "Jose Miguel", jour: "09-24" },
+  { prenom: "Cristobal", jour: "10-01" },
+  { prenom: "Michael", jour: "10-02" },
+  { prenom: "Sébastien", jour: "10-19" },
+  { prenom: "Clément", jour: "11-02" },
+  { prenom: "Florence", jour: "11-04" },
+  { prenom: "Céline", jour: "11-07" },
+  { prenom: "Jessica", jour: "11-09" },
+  { prenom: "Aurélie", jour: "11-27" },
+  { prenom: "Océane", jour: "12-15" },
+  { prenom: "Herwin", jour: "12-18" },
+  { prenom: "Frédéric", jour: "12-23" },
+  { prenom: "Marie-Sophie", jour: "12-30" },
 ];
 
 // Veille réglementaire : affichée du « du » au « au » inclus
@@ -207,7 +242,10 @@ function ajouterSlide(html, classe) {
 }
 
 // Anniversaires du jour
-const annivs = ANNIVERSAIRES.filter(a => a.jour === cleJour).map(a => esc(a.prenom));
+// Le lundi, on fête aussi les anniversaires du samedi et du dimanche
+const joursFetes = [cleJour];
+if (auj.getDay() === 1) [1, 2].forEach(n => { const d = new Date(auj); d.setDate(d.getDate() - n); joursFetes.push(pad(d.getMonth() + 1) + "-" + pad(d.getDate())); });
+const annivs = ANNIVERSAIRES.filter(a => joursFetes.includes(a.jour)).map(a => esc(a.prenom));
 if (annivs.length) {
   ajouterSlide(
     '<div class="kicker">' + puce + "Anniversaire</div>" +
