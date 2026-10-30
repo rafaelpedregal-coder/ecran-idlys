@@ -417,27 +417,5 @@ setInterval(majHeure, 10000);
 // Rechargement toutes les heures pour récupérer les mises à jour publiées sur GitHub
 setInterval(() => location.reload(), 3600000);
 </script>
-<!-- =====================================================================
-     RADIO (test) — lecteur invisible. Pour couper la radio : mettre RADIO_URL = ""
-     ===================================================================== -->
-<audio id="radio" preload="none" autoplay></audio>
-<script>
-(function () {
-  const RADIO_URL = "https://streaming.nrjaudio.fm/ouuku85n3nje?origine=fluxurlradio"; // Chérie FM
-  if (!RADIO_URL) return;
-  const r = document.getElementById("radio");
-  r.src = RADIO_URL;
-  r.volume = 1;
-  function jouer() {
-    const p = r.play();
-    if (p && p.catch) p.catch(e => console.log("[radio] lecture bloquée :", e.name));
-  }
-  jouer();
-  // Relance automatique si le flux coupe ou si la lecture est bloquée
-  r.addEventListener("error", () => setTimeout(() => { r.load(); jouer(); }, 10000));
-  r.addEventListener("ended", () => { r.load(); jouer(); });
-  setInterval(() => { if (r.paused) jouer(); }, 30000);
-})();
-</script>
 </body>
 </html>
