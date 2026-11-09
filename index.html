@@ -224,6 +224,12 @@ const ANNIVERSAIRES = [
   { prenom: "Marie-Sophie", jour: "12-30" },
 ];
 
+// Anniversaires hors PayFit (personnes non salariées) : liste permanente, à conserver.
+// La mise à jour hebdomadaire ne remplace que le bloc ANNIVERSAIRES ci-dessus, jamais celui-ci.
+const ANNIVERSAIRES_HORS_PAYFIT = [
+  { prenom: "Thierry", jour: "11-10" },
+];
+
 // Veille réglementaire : un écran par actualité, du « du » au « au » inclus
 // (mise à jour automatique chaque jour ouvré à partir du mail « Veille NRJ Diags »)
 const VEILLE = [
@@ -278,7 +284,7 @@ function ajouterSlide(html, classe) {
 }
 
 // Anniversaires du jour
-const annivs = ANNIVERSAIRES.filter(a => a.jour === cleJour).map(a => esc(a.prenom));
+const annivs = ANNIVERSAIRES.concat(ANNIVERSAIRES_HORS_PAYFIT).filter(a => a.jour === cleJour).map(a => esc(a.prenom));
 if (annivs.length) {
   ajouterSlide(
     '<div class="kicker">' + puce + "Anniversaire</div>" +
